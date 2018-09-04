@@ -1,0 +1,63 @@
+const upload = document.getElementById('upload')
+const table = document.getElementById('table')
+const title = document.getElementById('titleTable')
+
+const cdg = canvasDatagrid({
+  parentNode: table,
+})
+cdg.style.height = '100%'
+cdg.style.width = '100%'
+
+upload.onchange = ev => {
+  const file = ev.target.files[0]
+  var name = file.name
+  title.innerHTML = name
+  const formData = new FormData()
+  formData.set('file', file)
+  fetch('/upload', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(r => r.blob())
+    .then(loadSheet)
+    .catch(err => console.error(err))
+}
+
+function loadSheet (blob) {
+  const fileReader = new FileReader()
+  fileReader.onload = ev => {
+    const wb = XLSX.read(ev.target.result, { type: 'binary' })
+    const json = toJson(wb)
+    const firstSheetName = wb.SheetNames[0]
+    displaySheet(json[firstSheetName])
+  }
+  fileReader.readAsBinaryString(blob)
+}
+
+function toJson (workbook) {
+  var result = {}
+  workbook.SheetNames.forEach(function(sheetName) {
+    var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1})
+    if(roa.length > 0) result[sheetName] = roa
+  })
+  return result
+}
+
+function displaySheet (rows) {
+  /* set up table headers */
+  var L = 0;
+  rows.forEach(function(r) { if(L < r.length) L = r.length; })
+  for(var i = 0; i < rows[0].length; ++i) {
+    if (rows[0][i] === undefined) {
+      rows[0][i] = ""
+    }
+  }
+  for(var i = rows[0].length; i < L; ++i) {
+    rows[0][i] = ""
+  }
+
+  /* load data */
+  cdg.data = rows
+  // reset the input
+  upload.value = ''
+}
