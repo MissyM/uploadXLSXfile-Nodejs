@@ -1,0 +1,1 @@
+After clone this repo, please write `<npm i>` o `<npm install>`. When are installed the dependences please run the app with `<node app.js>` because is a node application

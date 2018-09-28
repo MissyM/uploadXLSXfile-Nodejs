@@ -1,3 +1,4 @@
+//SERVER
 const express = require('express')
 const formidable = require('formidable')
 const Excel = require('exceljs')
@@ -14,7 +15,8 @@ app.post('/upload', (req, res) => {
         const book = new Excel.Workbook()
         await book.xlsx.readFile(filePath)
         // Modify the book
-        const sheet = book.getWorksheet(1)
+        const id = book.worksheets[0].id
+        const sheet = book.getWorksheet(id)
         let L = 0
         const numRows = sheet.rowCount
         for (let i = 1; i <= numRows; i++) {
