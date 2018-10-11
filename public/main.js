@@ -11,7 +11,8 @@ cdg.style.width = '100%'
 upload.onchange = ev => {
   const file = ev.target.files[0]
   var name = file.name
-  title.innerHTML = name
+  //Aqui puede cambiar el título de la tabla
+  title.innerHTML = name //Ejemplo: title.innerHTML = "Muestras de la Población"
   const formData = new FormData()
   formData.set('file', file)
   fetch('/upload', {
