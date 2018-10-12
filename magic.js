@@ -1,3 +1,5 @@
+// Mediante este script calcula cuantos caracteres hay en cada celda
+// y los escribe en una columna adicional separado de comas 
 function modify(book) {
   const id = book.worksheets[0].id
   const sheet = book.getWorksheet(id)
@@ -22,7 +24,7 @@ function modify(book) {
         //
         arrayLengths.push((row.getCell(j).value || '').length)
     }
-    colValues.push(arrayLengths.join(','))// Separa por comas los elementos
+    colValues.push(arrayLengths.join(','))// Separa por comas los valores
   }
   sheet.getColumn(colIdx).values = colValues
 }

@@ -46,14 +46,14 @@ function toJson (workbook) {
 
 function displaySheet (rows) {
   /* set up table headers */
-  var L = 0;
-  rows.forEach(function(r) { if(L < r.length) L = r.length; })
+  var maxNumColsByRow = 0;
+  rows.forEach(function(r) { if(maxNumColsByRow < r.length) maxNumColsByRow = r.length; })
   for(var i = 0; i < rows[0].length; ++i) {
     if (rows[0][i] === undefined) {
       rows[0][i] = ""
     }
   }
-  for(var i = rows[0].length; i < L; ++i) {
+  for(var i = rows[0].length; i < maxNumColsByRow; ++i) {
     rows[0][i] = ""
   }
 
