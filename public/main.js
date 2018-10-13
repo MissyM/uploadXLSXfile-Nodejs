@@ -1,6 +1,7 @@
-const upload = document.getElementById('upload')
+const uploadButton = document.getElementById('uploadButton')
 const table = document.getElementById('table')
 const title = document.getElementById('titleTable')
+const goButton = document.getElementById('goButton')
 
 const cdg = canvasDatagrid({
   parentNode: table,
@@ -8,11 +9,15 @@ const cdg = canvasDatagrid({
 cdg.style.height = '100%'
 cdg.style.width = '100%'
 
-upload.onchange = ev => {
+uploadButton.onchange = ev => {
   const file = ev.target.files[0]
   var name = file.name
   //Aqui puede cambiar el título de la tabla
   title.innerHTML = name //Ejemplo: title.innerHTML = "Muestras de la Población"
+  loadSheet(ev.target.files[0])
+}
+goButton.onclick = ev => {
+  const file = uploadButton.files[0]
   const formData = new FormData()
   formData.set('file', file)
   fetch('/upload', {
@@ -46,7 +51,7 @@ function toJson (workbook) {
 
 function displaySheet (rows) {
   /* set up table headers */
-  var maxNumColsByRow = 0;
+  var maxNumColsByRow = 0
   rows.forEach(function(r) { if(maxNumColsByRow < r.length) maxNumColsByRow = r.length; })
   for(var i = 0; i < rows[0].length; ++i) {
     if (rows[0][i] === undefined) {
@@ -60,5 +65,5 @@ function displaySheet (rows) {
   /* load data */
   cdg.data = rows
   // reset the input
-  upload.value = ''
+  //uploadButton.value = ''
 }
